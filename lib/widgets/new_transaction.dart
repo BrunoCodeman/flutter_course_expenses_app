@@ -20,6 +20,7 @@ class NewTransaction extends StatelessWidget {
             ),
             TextField(
               decoration: InputDecoration(labelText: "Amount"),
+              keyboardType: TextInputType.number,
               controller: amountController,
             ),
             TextButton(
@@ -31,7 +32,9 @@ class NewTransaction extends StatelessWidget {
               },
               child: Text(
                 'Add Transaction',
-                style: TextStyle(color: Colors.purple),
+                style: TextStyle(
+                  color: Colors.purple,
+                ),
               ),
             )
           ],
