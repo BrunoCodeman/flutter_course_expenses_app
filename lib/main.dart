@@ -9,9 +9,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter App',
+      title: 'Personal Expenses',
       home: MyHomePage(),
-      theme: ThemeData(primarySwatch: Colors.purple, accentColor: Colors.amber),
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        accentColor: Colors.amber,
+        fontFamily: 'QuickSand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              headline6: TextStyle(
+                fontFamily: "QuickSand",
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+                  fontFamily: "OpenSans",
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+        ),
+      ),
     );
   }
 }
@@ -23,18 +43,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    Transaction(
-      id: "1",
-      title: "New Shoes",
-      amount: 70,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: "2",
-      title: "Pizza",
-      amount: 5,
-      date: DateTime.now(),
-    ),
+    // Transaction(
+    //   id: "1",
+    //   title: "New Shoes",
+    //   amount: 70,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: "2",
+    //   title: "Pizza",
+    //   amount: 5,
+    //   date: DateTime.now(),
+    // ),
   ];
 
   void _addNewTransaction(String title, double amount) {
@@ -59,7 +79,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter App'),
+        title: Text(
+          'Expenses app',
+          style: TextStyle(fontFamily: "OpenSans"),
+        ),
         actions: [
           IconButton(
               onPressed: () => _startAddNewTransaction(context),
