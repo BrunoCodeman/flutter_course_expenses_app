@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(),
       theme: ThemeData(
         primarySwatch: Colors.purple,
-        accentColor: Colors.amber,
+        //colorScheme: ColorScheme.light(),
         fontFamily: 'QuickSand',
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
+                button: TextStyle(color: Colors.white),
               ),
         ),
       ),
