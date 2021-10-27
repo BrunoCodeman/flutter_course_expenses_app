@@ -1,6 +1,6 @@
 # expenses_app
 
-A Flutter project from [this course](udemy.com/course/learn-flutter-dart-to-build-ios-android-apps)
+A Flutter project from [this course](https://udemy.com/course/learn-flutter-dart-to-build-ios-android-apps)
 
 ## Getting Started
 
