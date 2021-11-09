@@ -10,6 +10,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeOfContext = Theme.of(context);
     return Container(
       child: transactions.isEmpty
           ? LayoutBuilder(builder: (context, constraints) {
@@ -17,7 +18,7 @@ class TransactionList extends StatelessWidget {
                 children: [
                   Text(
                     "No transactions to show",
-                    style: Theme.of(context).textTheme.headline6,
+                    style: themeOfContext.textTheme.headline6,
                   ),
                   SizedBox(
                     height: 10,
@@ -46,21 +47,21 @@ class TransactionList extends StatelessWidget {
                             icon: Icon(Icons.delete),
                             label: Text(
                               "delete",
-                              style: TextStyle(
-                                  color: Theme.of(context).errorColor),
+                              style:
+                                  TextStyle(color: themeOfContext.errorColor),
                             ))
                         : IconButton(
                             icon: Icon(
                               Icons.delete,
-                              color: Theme.of(context).errorColor,
+                              color: themeOfContext.errorColor,
                             ),
                             onPressed: () =>
                                 deleteTransaction(transactions[index].id),
-                            color: Theme.of(context).errorColor,
+                            color: themeOfContext.errorColor,
                           ),
                     title: Text(
                       transactions[index].title,
-                      style: Theme.of(context).textTheme.headline6,
+                      style: themeOfContext.textTheme.headline6,
                     ),
                     subtitle: Text(
                       DateFormat('dd/MM/yyyy hh:mm')

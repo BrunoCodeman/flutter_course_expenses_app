@@ -44,6 +44,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    final themeOfContext = Theme.of(context);
     return SingleChildScrollView(
       child: Card(
         child: Container(
@@ -78,7 +79,7 @@ class _NewTransactionState extends State<NewTransaction> {
                       child: Text(
                         "Choose date",
                         style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                          color: themeOfContext.primaryColor,
                         ),
                       ),
                     ),
@@ -90,7 +91,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 child: Text(
                   'Add Transaction',
                   style: TextStyle(
-                    color: Theme.of(context).textTheme.button!.color,
+                    color: themeOfContext.textTheme.button!.color,
                   ),
                 ),
               )
