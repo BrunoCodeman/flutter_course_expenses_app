@@ -1,11 +1,11 @@
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_complete_guide/widgets/adaptive_app_bar.dart';
+import 'package:flutter_complete_guide/widgets/adaptive_scaffold.dart';
+import 'package:flutter_complete_guide/widgets/app_body.dart';
 import 'package:flutter_complete_guide/widgets/new_transaction.dart';
 import 'package:flutter_complete_guide/widgets/transaction_list.dart';
 import './transaction.dart';
-import 'widgets/chart.dart';
 
 void main() {
   //to define orientation:
@@ -33,14 +33,21 @@ class MyApp extends StatelessWidget {
               ),
             ),
         appBarTheme: AppBarTheme(
-          textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
-                  fontFamily: "OpenSans",
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                button: TextStyle(color: Colors.white),
-              ),
+          titleTextStyle: TextStyle(
+            fontFamily: "OpenSans",
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          //backgroundColor: ThemeData.light().backgroundColor,
+          //toolbarTextStyle: ,
+          // textTheme: ThemeData.light().textTheme.copyWith(
+          //       headline6: TextStyle(
+          //         fontFamily: "OpenSans",
+          //         fontSize: 20,
+          //         fontWeight: FontWeight.bold,
+          //       ),
+          //       button: TextStyle(color: Colors.white),
+          //     ),
         ),
       ),
     );
@@ -54,7 +61,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
-  bool _showChart = false;
   List<Transaction> _recentTransactions() {
     return _transactions
         .where(
@@ -94,31 +100,11 @@ class _MyHomePageState extends State<MyHomePage> {
       style: TextStyle(fontFamily: "OpenSans"),
     );
     final mediaQueryContext = MediaQuery.of(context);
-    final _isLandscapeMode =
-        mediaQueryContext.orientation == Orientation.landscape;
-    final appBar = (Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: appTitle,
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onTap: () => _startAddNewTransaction(context),
-                  child: Icon(
-                    CupertinoIcons.add,
-                  ),
-                )
-              ],
-            ),
-          )
-        : AppBar(
-            title: appTitle,
-            actions: [
-              IconButton(
-                  onPressed: () => _startAddNewTransaction(context),
-                  icon: Icon(Icons.add))
-            ],
-          )) as PreferredSizeWidget;
+    final appBar = adaptiveAppBar(
+      context,
+      appTitle,
+      _startAddNewTransaction,
+    );
     final transactionsListWidget = Container(
       height: (mediaQueryContext.size.height -
               mediaQueryContext.padding.top -
@@ -130,63 +116,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    final appBody = SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (_isLandscapeMode)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Show Chart",
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Switch.adaptive(
-                    activeColor: Theme.of(context).colorScheme.secondary,
-                    value: _showChart,
-                    onChanged: (v) => setState(() => _showChart = v),
-                  ),
-                ],
-              ),
-            if (!_isLandscapeMode)
-              Container(
-                  height: (mediaQueryContext.size.height -
-                          mediaQueryContext.padding.top -
-                          appBar.preferredSize.height) *
-                      0.3,
-                  child: Chart(_recentTransactions())),
-            if (!_isLandscapeMode) transactionsListWidget,
-            if (_isLandscapeMode)
-              _showChart
-                  ? Container(
-                      height: (mediaQueryContext.size.height -
-                              mediaQueryContext.padding.top -
-                              appBar.preferredSize.height) *
-                          0.7,
-                      child: Chart(_recentTransactions()))
-                  : transactionsListWidget
-          ],
-        ),
-      ),
-    );
+    final appBody = AppBody(appBar.preferredSize.height, transactionsListWidget,
+        _recentTransactions());
 
-    return Platform.isIOS
-        ? CupertinoPageScaffold(
-            child: appBody,
-            navigationBar: appBar as ObstructingPreferredSizeWidget)
-        : Scaffold(
-            appBar: appBar,
-            body: appBody,
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: Platform.isIOS
-                ? Container()
-                : FloatingActionButton(
-                    onPressed: () => _startAddNewTransaction(context),
-                    child: Icon(Icons.add),
-                  ),
-          );
+    return AdaptiveScaffold(appBody, appBar, _startAddNewTransaction);
   }
 }

@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_complete_guide/widgets/adaptive_flat_button.dart';
 import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
@@ -45,6 +47,7 @@ class _NewTransactionState extends State<NewTransaction> {
   @override
   Widget build(BuildContext context) {
     final themeOfContext = Theme.of(context);
+
     return SingleChildScrollView(
       child: Card(
         child: Container(
@@ -71,18 +74,13 @@ class _NewTransactionState extends State<NewTransaction> {
                 height: 70,
                 child: Row(
                   children: [
-                    Text(_transactionDate == null
-                        ? "No date chosen"
-                        : DateFormat.yMd().format(_transactionDate!)),
-                    TextButton(
-                      onPressed: _showDatePicker,
-                      child: Text(
-                        "Choose date",
-                        style: TextStyle(
-                          color: themeOfContext.primaryColor,
-                        ),
-                      ),
+                    Text(
+                      _transactionDate == null
+                          ? "No date chosen"
+                          : DateFormat.yMd().format(_transactionDate!),
                     ),
+                    AdaptiveFlatButton(
+                        text: "Choose date", handler: _showDatePicker),
                   ],
                 ),
               ),
