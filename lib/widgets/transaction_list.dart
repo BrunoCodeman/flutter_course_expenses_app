@@ -1,6 +1,6 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import '../transaction.dart';
+import 'transaction_item.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
@@ -36,48 +36,9 @@ class TransactionList extends StatelessWidget {
           : ListView.builder(
               itemCount: transactions.length,
               itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-                  elevation: 5,
-                  child: ListTile(
-                    trailing: MediaQuery.of(context).size.width > 460
-                        ? TextButton.icon(
-                            onPressed: () =>
-                                deleteTransaction(transactions[index].id),
-                            icon: Icon(Icons.delete),
-                            label: Text(
-                              "delete",
-                              style:
-                                  TextStyle(color: themeOfContext.errorColor),
-                            ))
-                        : IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: themeOfContext.errorColor,
-                            ),
-                            onPressed: () =>
-                                deleteTransaction(transactions[index].id),
-                            color: themeOfContext.errorColor,
-                          ),
-                    title: Text(
-                      transactions[index].title,
-                      style: themeOfContext.textTheme.headline6,
-                    ),
-                    subtitle: Text(
-                      DateFormat('dd/MM/yyyy hh:mm')
-                          .format(transactions[index].date),
-                    ),
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Padding(
-                        padding: EdgeInsets.all(6),
-                        child: FittedBox(
-                          child: Text(
-                              "\$ ${transactions[index].amount.toStringAsFixed(2)}"),
-                        ),
-                      ),
-                    ),
-                  ),
+                return TransactionItem(
+                  deleteTransaction: deleteTransaction,
+                  transaction: transactions[index],
                 );
               },
             ),
