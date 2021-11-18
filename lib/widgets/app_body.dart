@@ -16,6 +16,49 @@ class AppBody extends StatefulWidget {
 }
 
 class _AppBodyState extends State<AppBody> {
+  List<Widget> _buildLandscape() {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Show Chart",
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          Switch.adaptive(
+            activeColor: Theme.of(context).colorScheme.secondary,
+            value: _showChart,
+            onChanged: (v) => setState(() => _showChart = v),
+          ),
+        ],
+      ),
+      this.widget.transactionsListWidget
+    ];
+  }
+
+  List<Widget> _buildPortrait(
+      MediaQueryData mediaQueryContext, double appBarHeight) {
+    return [
+      Container(
+        height: (mediaQueryContext.size.height -
+                mediaQueryContext.padding.top -
+                appBarHeight) *
+            0.3,
+        child: Chart(
+          this.widget.recentTransactions,
+        ),
+      ),
+      _showChart
+          ? Container(
+              height: (mediaQueryContext.size.height -
+                      mediaQueryContext.padding.top -
+                      this.widget.appBarHeight) *
+                  0.7,
+              child: Chart(this.widget.recentTransactions))
+          : this.widget.transactionsListWidget
+    ];
+  }
+
   bool _showChart = false;
   @override
   Widget build(BuildContext context) {
@@ -26,40 +69,9 @@ class _AppBodyState extends State<AppBody> {
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (_isLandscapeMode)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Show Chart",
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Switch.adaptive(
-                    activeColor: Theme.of(context).colorScheme.secondary,
-                    value: _showChart,
-                    onChanged: (v) => setState(() => _showChart = v),
-                  ),
-                ],
-              ),
-            if (!_isLandscapeMode)
-              Container(
-                  height: (mediaQueryContext.size.height -
-                          mediaQueryContext.padding.top -
-                          this.widget.appBarHeight) *
-                      0.3,
-                  child: Chart(this.widget.recentTransactions)),
-            if (!_isLandscapeMode) this.widget.transactionsListWidget,
-            if (_isLandscapeMode)
-              _showChart
-                  ? Container(
-                      height: (mediaQueryContext.size.height -
-                              mediaQueryContext.padding.top -
-                              this.widget.appBarHeight) *
-                          0.7,
-                      child: Chart(this.widget.recentTransactions))
-                  : this.widget.transactionsListWidget
-          ],
+          children: _isLandscapeMode
+              ? _buildLandscape()
+              : _buildPortrait(mediaQueryContext, widget.appBarHeight),
         ),
       ),
     );
