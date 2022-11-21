@@ -1,6 +1,7 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/widgets/adaptive_app_bar.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_complete_guide/widgets/adaptive_scaffold.dart';
 import 'package:flutter_complete_guide/widgets/app_body.dart';
 import 'package:flutter_complete_guide/widgets/new_transaction.dart';
@@ -9,8 +10,13 @@ import './transaction.dart';
 
 void main() {
   //to define orientation:
-  //WidgetsFlutterBinding.ensureInitialized();
-  //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  //   DeviceOrientation.landscapeLeft,
+  //   DeviceOrientation.landscapeRight
+  // ]);
 
   runApp(MyApp());
 }
@@ -23,7 +29,7 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(),
       theme: ThemeData(
         primarySwatch: Colors.purple,
-        //colorScheme: ColorScheme.light(),
+        colorScheme: ColorScheme.light(),
         fontFamily: 'QuickSand',
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
@@ -38,7 +44,7 @@ class MyApp extends StatelessWidget {
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-          //backgroundColor: ThemeData.light().backgroundColor,
+          backgroundColor: ThemeData.light().backgroundColor,
           //toolbarTextStyle: ,
           // textTheme: ThemeData.light().textTheme.copyWith(
           //       headline6: TextStyle(
@@ -61,17 +67,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
-  List<Transaction> _recentTransactions() {
-    return _transactions
-        .where(
-          (tx) => tx.date.isAfter(
-            DateTime.now().subtract(
-              Duration(days: 7),
-            ),
+  List<Transaction> _recentTransactions() => _transactions
+      .where(
+        (tx) => tx.date.isAfter(
+          DateTime.now().subtract(
+            Duration(days: 7),
           ),
-        )
-        .toList();
-  }
+        ),
+      )
+      .toList();
 
   void _deleteTransaction(String id) =>
       setState(() => _transactions.removeWhere((t) => t.id == id));
@@ -91,6 +95,32 @@ class _MyHomePageState extends State<MyHomePage> {
             //behavior: HitTestBehavior.opaque,
             onTap: () {},
             child: NewTransaction(newTransaction: _addNewTransaction)));
+  }
+
+  PreferredSizeWidget adaptiveAppBar(
+      BuildContext context, Widget appTitle, Function handler) {
+    return (Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: appTitle,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () => handler(context),
+                  child: Icon(
+                    CupertinoIcons.add,
+                  ),
+                )
+              ],
+            ),
+          )
+        : AppBar(
+            title: appTitle,
+            actions: [
+              IconButton(
+                  onPressed: () => handler(context), icon: Icon(Icons.add))
+            ],
+          )) as PreferredSizeWidget;
   }
 
   @override
