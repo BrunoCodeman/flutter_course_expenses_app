@@ -16,13 +16,15 @@ class AppBody extends StatefulWidget {
 }
 
 class _AppBodyState extends State<AppBody> {
+  bool _showChart = false;
+
   List<Widget> _buildLandscape() {
     return [
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Show Chart",
+            "Show Charty",
             style: Theme.of(context).textTheme.headline6,
           ),
           Switch.adaptive(
@@ -59,7 +61,6 @@ class _AppBodyState extends State<AppBody> {
     ];
   }
 
-  bool _showChart = false;
   @override
   Widget build(BuildContext context) {
     final mediaQueryContext = MediaQuery.of(context);
