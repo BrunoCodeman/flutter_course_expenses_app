@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../transaction.dart';
 import 'chart.dart';
 
@@ -18,16 +17,17 @@ class _AppBodyState extends State<AppBody> {
   bool _showChart = false;
 
   List<Widget> _buildLandscape() {
+    ThemeData theme = Theme.of(context);
     return [
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Show Charty",
-            style: Theme.of(context).textTheme.headline6,
+            "Show Chart",
+            style: theme.textTheme.headline6,
           ),
           Switch.adaptive(
-            activeColor: Theme.of(context).colorScheme.secondary,
+            activeColor: theme.colorScheme.secondary,
             value: _showChart,
             onChanged: (v) => setState(() => _showChart = v),
           ),
@@ -68,7 +68,8 @@ class _AppBodyState extends State<AppBody> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: _isLandscapeMode
               ? _buildLandscape()
               : _buildPortrait(mediaQueryContext, widget.appBarHeight),
