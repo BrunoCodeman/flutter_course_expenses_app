@@ -11,14 +11,24 @@ class NewTransaction extends StatefulWidget {
   _NewTransactionState createState() => _NewTransactionState();
 }
 
-class _NewTransactionState extends State<NewTransaction> {
+class _NewTransactionState extends State<NewTransaction>
+    with WidgetsBindingObserver {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
   DateTime? _transactionDate;
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+    print("didChangeAppLifecycleState");
+    print(state);
+  }
+
+  @override
   void dispose() {
     // TODO: implement dispose
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -30,6 +40,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     // TODO: implement initState
     super.initState();
   }
